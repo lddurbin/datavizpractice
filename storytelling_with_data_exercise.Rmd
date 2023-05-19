@@ -1,17 +1,38 @@
+---
+title: "Decluttering"
+author: "Lee Durbin"
+date: "2023-05-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r packages}
 library(dplyr)
 library(ggplot2)
+```
 
+
+## Re-create the original data
+
+```{r data_table}
 data <- tibble(year = rep(c(2017:2022), 3)) |> 
   tidyr::crossing(group = c("Our company", "S&P 500", "Competitive index")) |> 
   mutate(
     price = c(rep(100, 3), 83, 86, 96, 113, 125, 126, 101, 111, 149, 140, 165, 
               191, 110, 126, 157)
     )
+```
 
-ggplot(data, aes(x = year, y = price, colour = group)) +
+## Re-create the original chart
+
+```{r original_chart}
+original_plot <- ggplot(data, aes(x = year, y = price, colour = group)) +
   geom_line(size = 1.5) +
   geom_point(size = 5, shape = 18) +
-  scale_y_continuous(limits = c(0, 250), labels = scales::dollar_format()) +
+  scale_y_continuous(limits = c(0, 250), expand = c(0,0), labels = scales::dollar_format()) +
   scale_colour_manual(values = c("#A8E2D6", "#92D04F", "#367C29")) +
   theme_minimal() +
   theme(
@@ -26,4 +47,9 @@ ggplot(data, aes(x = year, y = price, colour = group)) +
   labs(
     title = "Five Year Shareholder Return\nFor an initial investment of $100 in 2017"
   )
+
+original_plot
+```
+
+
 
