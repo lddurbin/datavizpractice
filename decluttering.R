@@ -1,11 +1,29 @@
 library(dplyr)
 library(ggplot2)
-library(tidyr)
 
 data <- tibble(year = rep(c(2017:2022), 3)) |> 
-  crossing(group = c("Our company", "S&P 500", "Competitive index")) |> 
+  tidyr::crossing(group = c("Our company", "S&P 500", "Competitive index")) |> 
   mutate(
     price = c(rep(100, 3), 83, 86, 96, 113, 125, 126, 101, 111, 149, 140, 165, 
               191, 110, 126, 157)
     )
+
+ggplot(data, aes(x = year, y = price, colour = group)) +
+  geom_line(size = 1.5) +
+  geom_point(size = 5, shape = 18) +
+  scale_y_continuous(limits = c(0, 250), labels = scales::dollar_format()) +
+  scale_colour_manual(values = c("#A8E2D6", "#92D04F", "#367C29")) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_text(size = 12, face = "bold"),
+    axis.line = element_line(color = 'black'),
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+  ) +
+  labs(
+    title = "Five Year Shareholder Return\nFor an initial investment of $100 in 2017"
+  )
 
